@@ -1,0 +1,9 @@
+# AutoConfiguration
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.dg.mall.core.config.RedisAutoConfiguration,\
+com.dg.mall.core.config.FastjsonAutoConfiguration,\
+com.dg.mall.core.config.MybatisDataSourceAutoConfiguration,\
+com.dg.mall.core.config.PropertiesAutoConfiguration,\
+com.dg.mall.core.config.UtilAutoConfiguration,\
+com.dg.mall.core.config.DbInitializerAutoConfiguration,\
+com.dg.mall.core.config.MybatisPluginAutoConfiguration
