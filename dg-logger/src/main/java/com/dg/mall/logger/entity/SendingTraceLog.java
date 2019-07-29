@@ -17,12 +17,7 @@ package com.dg.mall.logger.entity;
 
 import lombok.Data;
 
-/**
- * 日志链实体类
- *
- * @author fengshuonan
- * @date 2018-05-16 09:40
- */
+
 @Data
 public class SendingTraceLog {
 

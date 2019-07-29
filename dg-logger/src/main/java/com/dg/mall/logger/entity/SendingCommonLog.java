@@ -17,12 +17,7 @@ package com.dg.mall.logger.entity;
 
 import lombok.Data;
 
-/**
- * 日志实体类
- *
- * @author fengshuonan
- * @date 2018-04-24 13:45
- */
+
 @Data
 public class SendingCommonLog {
 

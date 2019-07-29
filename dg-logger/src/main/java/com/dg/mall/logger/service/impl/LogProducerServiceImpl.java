@@ -49,7 +49,7 @@ public class LogProducerServiceImpl implements LogProducerService {
 
         executorService.execute(() -> {
             try {
-                template.send(KafkaConstants.LOG_TOPIC, KafkaConstants.LOG_TOPIC_KEY, log);
+                template.send(KafkaConstants.LOG_TOPIC, log);
             } catch (Exception e) {
                 logger.error("记录普通日志到kafka错误!", e);
             }
@@ -62,7 +62,7 @@ public class LogProducerServiceImpl implements LogProducerService {
 
         executorService.execute(() -> {
             try {
-                template.send(KafkaConstants.TRACE_LOG_TOPIC, KafkaConstants.TRACE_LOG_TOPIC_KEY, sendingTraceLog);
+                template.send(KafkaConstants.TRACE_LOG_TOPIC, sendingTraceLog);
             } catch (Exception e) {
                 logger.error("记录trace日志到kafka错误!", e);
             }
@@ -75,7 +75,7 @@ public class LogProducerServiceImpl implements LogProducerService {
 
         executorService.execute(() -> {
             try {
-                template.send(KafkaConstants.TC_LOG_TOPIC, KafkaConstants.TC_LOG_TOPIC_KEY, sendingTCLog);
+                template.send(KafkaConstants.TC_LOG_TOPIC, sendingTCLog);
             } catch (Exception e) {
                 logger.error("记录trace日志到kafka错误!", e);
             }

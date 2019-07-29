@@ -29,10 +29,5 @@ public interface KafkaConstants {
 
     String TC_LOG_TOPIC = "_TC_LOG_TOPIC";
 
-    String LOG_TOPIC_KEY = "_LOG_TOPIC_KEY";
-
-    String TRACE_LOG_TOPIC_KEY = "_TRACE_LOG_TOPIC_KEY";
-
-    String TC_LOG_TOPIC_KEY = "_TC_LOG_TOPIC_KEY";
 
 }

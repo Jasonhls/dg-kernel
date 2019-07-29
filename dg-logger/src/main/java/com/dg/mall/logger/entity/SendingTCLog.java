@@ -19,12 +19,7 @@ import lombok.Data;
 
 import java.util.Date;
 
-/**
- * 请求时间记录日志
- *
- * @author fengshuonan
- * @Date 2018/7/16 下午5:13
- */
+
 @Data
 public class SendingTCLog {
 
