@@ -35,9 +35,6 @@ import java.io.StringWriter;
 
 /**
  * 日志记录工具
- *
- * @author fengshuonan
- * @date 2018-01-16 15:00
  */
 public class LogUtil {
 
@@ -51,6 +48,10 @@ public class LogUtil {
 
     public static void info(String message) {
         doLog(LogLevel.INFO, RequestDataHolder.get(), message, null);
+    }
+
+    public static void info(String message, String... args) {
+        doLog(LogLevel.INFO, RequestDataHolder.get(), stringFormat(message, args), null);
     }
 
     public static void error(String message, Throwable exception) {
@@ -246,6 +247,22 @@ public class LogUtil {
      */
     public enum LogLevel {
         INFO, ERROR, WARN, DEBUG, TRACE
+    }
+
+    private static String stringFormat(String message, String... args){
+        StringBuffer result = new StringBuffer(message);
+        try {
+            String rep = "{}";
+            for (String arg : args) {
+                int start = result.indexOf(rep);
+                int end = start + rep.length();
+                result.replace(start, end, arg);
+            }
+
+        }catch (Exception e){
+            debug("日志格式化错误");
+        }
+        return result.toString();
     }
 
 }

@@ -9,6 +9,7 @@
         <module>dg-jwt</module>
         <module>dg-validator</module>
         <module>dg-logger</module>
+        <module>dg_generator</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
