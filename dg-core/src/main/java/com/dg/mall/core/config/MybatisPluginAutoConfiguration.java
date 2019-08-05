@@ -18,16 +18,15 @@ package com.dg.mall.core.config;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import com.baomidou.mybatisplus.annotation.DbType;
+import com.baomidou.mybatisplus.autoconfigure.MybatisPlusProperties;
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import com.baomidou.mybatisplus.extension.plugins.OptimisticLockerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
 import com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean;
 import com.dg.mall.core.config.properties.DruidProperties;
-import com.dg.mall.core.config.properties.MybatisMapperProperties;
 import com.dg.mall.core.datascope.DataScopeInterceptor;
 import com.dg.mall.core.dbid.GunsDatabaseIdProvider;
 import com.dg.mall.core.metadata.CustomMetaObjectHandler;
-import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,7 +73,7 @@ public class MybatisPluginAutoConfiguration {
     }
 
     @Autowired
-    private MybatisMapperProperties mybatisMapperProperties;
+    private MybatisPlusProperties mybatisPlusProperties;
 
     @Bean
     @Primary
@@ -82,7 +81,7 @@ public class MybatisPluginAutoConfiguration {
             throws Exception {
         final MybatisSqlSessionFactoryBean sessionFactory = new MybatisSqlSessionFactoryBean();
         Resource[] resources = new PathMatchingResourcePatternResolver()
-                .getResources(mybatisMapperProperties.getMapperLocation());
+                .getResources(mybatisPlusProperties.getMapperLocations()[0]);
         sessionFactory.setMapperLocations(resources);
         sessionFactory.setDataSource(druidDataSource);
 

@@ -16,8 +16,8 @@
 package com.dg.mall.core.config;
 
 import com.alibaba.druid.pool.DruidDataSource;
+import com.baomidou.mybatisplus.autoconfigure.MybatisPlusProperties;
 import com.dg.mall.core.config.properties.DruidProperties;
-import com.dg.mall.core.config.properties.MybatisMapperProperties;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -40,9 +40,8 @@ public class MybatisDataSourceAutoConfiguration {
     }
 
     @Bean
-    @ConfigurationProperties(prefix = "mybatis")
-    public MybatisMapperProperties mybatisMapperProperties(){
-        return new MybatisMapperProperties();
+    public MybatisPlusProperties mybatisPlusProperties(){
+        return new MybatisPlusProperties();
     }
 
     /**
