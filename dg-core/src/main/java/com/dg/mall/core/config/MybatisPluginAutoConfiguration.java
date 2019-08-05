@@ -23,20 +23,21 @@ import com.baomidou.mybatisplus.extension.plugins.OptimisticLockerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
 import com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean;
 import com.dg.mall.core.config.properties.DruidProperties;
+import com.dg.mall.core.config.properties.MybatisMapperProperties;
 import com.dg.mall.core.datascope.DataScopeInterceptor;
 import com.dg.mall.core.dbid.GunsDatabaseIdProvider;
 import com.dg.mall.core.metadata.CustomMetaObjectHandler;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
-
-import javax.sql.DataSource;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 
 /**
  * MybatisPlus配置
@@ -72,11 +73,17 @@ public class MybatisPluginAutoConfiguration {
         return paginationInterceptor;
     }
 
+    @Autowired
+    private MybatisMapperProperties mybatisMapperProperties;
+
     @Bean
     @Primary
     public SqlSessionFactory mySqlSqlSessionFactory()
             throws Exception {
         final MybatisSqlSessionFactoryBean sessionFactory = new MybatisSqlSessionFactoryBean();
+        Resource[] resources = new PathMatchingResourcePatternResolver()
+                .getResources(mybatisMapperProperties.getMapperLocation());
+        sessionFactory.setMapperLocations(resources);
         sessionFactory.setDataSource(druidDataSource);
 
         sessionFactory.setPlugins(new Interceptor[]{
