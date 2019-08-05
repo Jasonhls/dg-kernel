@@ -6,6 +6,7 @@ com.dg.mall.core.config.MybatisDataSourceAutoConfiguration,\
 com.dg.mall.core.config.PropertiesAutoConfiguration,\
 com.dg.mall.core.config.UtilAutoConfiguration,\
 com.dg.mall.core.config.DbInitializerAutoConfiguration,\
+com.dg.mall.core.config.AopAutoConfiguration,\
 com.dg.mall.core.config.MybatisPluginAutoConfiguration
 org.springframework.boot.SpringApplicationRunListener=\
   com.dg.mall.core.exception.CodeApplicationListener
