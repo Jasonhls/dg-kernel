@@ -15,6 +15,7 @@
  */
 package com.dg.mall.core.config;
 
+import com.dg.mall.core.exception.CodeMsgRegistry;
 import com.dg.mall.core.exception.DefaultExceptionHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -33,6 +34,15 @@ public class AopAutoConfiguration {
     @Bean
     public DefaultExceptionHandler defaultControllerExceptionHandler() {
         return new DefaultExceptionHandler();
+    }
+
+    /**
+     * 业务异常存储器
+     * @return
+     */
+    @Bean
+    public CodeMsgRegistry codeMsgRegistry(){
+        return new CodeMsgRegistry();
     }
 
 }
