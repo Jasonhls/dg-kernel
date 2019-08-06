@@ -27,44 +27,44 @@ import java.util.Set;
  */
 public interface AbstractLoginUser {
 
-    /**
-     * 获取用户唯一id
-     *
-     * @author fengshuonan
-     * @Date 2018/8/10 下午5:38
-     */
-    <T> T getUserUniqueId();
-
-    /**
-     * 获取用户唯一id
-     *
-     * @author fengshuonan
-     * @Date 2018/8/10 下午5:38
-     */
-    <T> T getAppId();
-
-    /**
-     * 获取角色id的集合
-     *
-     * @author fengshuonan
-     * @Date 2018/8/10 下午5:40
-     */
-    <T> Set<T> getRoleIds();
-
-    /**
-     * 角色编码集合
-     *
-     * @author fengshuonan
-     * @Date 2018/8/10 下午5:40
-     */
-    <T> Set<T> getRoleCodes();
-
-    /**
-     * 包含的资源权限url
-     *
-     * @author fengshuonan
-     * @Date 2018/8/10 下午5:40
-     */
-    <T> Set<T> getResourceUrls();
+//    /**
+//     * 获取用户唯一id
+//     *
+//     * @author fengshuonan
+//     * @Date 2018/8/10 下午5:38
+//     */
+//    <T> T getUserUniqueId();
+//
+//    /**
+//     * 获取用户唯一id
+//     *
+//     * @author fengshuonan
+//     * @Date 2018/8/10 下午5:38
+//     */
+//    <T> T getAppId();
+//
+//    /**
+//     * 获取角色id的集合
+//     *
+//     * @author fengshuonan
+//     * @Date 2018/8/10 下午5:40
+//     */
+//    <T> Set<T> getRoleIds();
+//
+//    /**
+//     * 角色编码集合
+//     *
+//     * @author fengshuonan
+//     * @Date 2018/8/10 下午5:40
+//     */
+//    <T> Set<T> getRoleCodes();
+//
+//    /**
+//     * 包含的资源权限url
+//     *
+//     * @author fengshuonan
+//     * @Date 2018/8/10 下午5:40
+//     */
+//    <T> Set<T> getResourceUrls();
 
 }
