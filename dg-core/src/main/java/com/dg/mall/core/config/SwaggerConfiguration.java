@@ -1,5 +1,7 @@
 package com.dg.mall.core.config;
 
+import io.swagger.models.Swagger;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -12,6 +14,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @Configuration
 @EnableSwagger2
+@ConditionalOnClass(Swagger.class)
 public class SwaggerConfiguration {
     @Bean
     public Docket userApi() {
