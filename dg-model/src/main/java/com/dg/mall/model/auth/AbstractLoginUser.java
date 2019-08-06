@@ -27,13 +27,13 @@ import java.util.Set;
  */
 public interface AbstractLoginUser {
 
-//    /**
-//     * 获取用户唯一id
-//     *
-//     * @author fengshuonan
-//     * @Date 2018/8/10 下午5:38
-//     */
-//    <T> T getUserUniqueId();
+    /**
+     * 获取用户唯一id
+     *
+     * @author fengshuonan
+     * @Date 2018/8/10 下午5:38
+     */
+    <T> T getUserUniqueId();
 //
 //    /**
 //     * 获取用户唯一id
