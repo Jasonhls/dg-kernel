@@ -149,7 +149,6 @@ public class LogUtil {
                 try {
                     AbstractLoginContext bean = SpringContextHolder.getBean(AbstractLoginContext.class);
                     AbstractLoginUser loginUser = bean.getLoginUser();
-                    log.setAppCode(loginUser.getAppId().toString());
                     log.setAccountId(loginUser.getUserUniqueId() != null ? loginUser.getUserUniqueId().toString() : null);
                 } catch (Exception e) {
                     if (logger.isDebugEnabled()) {
