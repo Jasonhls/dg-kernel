@@ -15,21 +15,42 @@
  */
 package com.dg.mall.model.enums;
 
+import lombok.Getter;
+
 /**
  * 是否删除的标识
  *
  * @author fengshuonan
  * @Date 2018/7/24 下午5:31
  */
+@Getter
 public enum DeleteFlagEnum {
 
-    /**
-     * 已删除
-     */
-    Y,
 
-    /**
-     * 未删除
-     */
-    N
+    Y(true, "已删除", 1),
+
+    N(false, "未删除", 0);
+
+    private Boolean flag;
+    private String desc;
+    private Integer code;
+
+    DeleteFlagEnum(Boolean flag, String desc, Integer code) {
+        this.flag = flag;
+        this.desc = desc;
+        this.code = code;
+    }
+
+    public static String valueOf(Integer status) {
+        if (status == null) {
+            return "";
+        } else {
+            for (DeleteFlagEnum s : DeleteFlagEnum.values()) {
+                if (s.getCode().equals(status)) {
+                    return s.getDesc();
+                }
+            }
+            return "";
+        }
+    }
 }
