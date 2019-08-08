@@ -70,7 +70,6 @@ public class SimpleGenerator {
         gc.setOutputDir(projectPath + generateParams.getOutputDirectory());
         gc.setAuthor(generateParams.getAuthor());
         gc.setOpen(false);
-        gc.setSwagger2(true);
         // 自定义文件命名，注意 %s 会自动填充表实体属性！
         if (generateParams.getGeneratorInterface()) {
             gc.setServiceName("%sService");
