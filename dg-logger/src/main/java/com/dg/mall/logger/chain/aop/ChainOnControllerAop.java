@@ -26,7 +26,6 @@ import com.dg.mall.logger.chain.context.TraceIdHolder;
 import com.dg.mall.logger.chain.enums.RpcPhaseEnum;
 import com.dg.mall.logger.log.SqlHolder;
 import com.dg.mall.logger.util.TraceUtil;
-import com.dg.mall.model.auth.context.LoginUserHolder;
 import com.dg.mall.model.constants.AopSortConstants;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
@@ -94,9 +93,6 @@ public class ChainOnControllerAop {
         //初始化log记录
         SqlHolder.init();
 
-        //初始化临时LoginUser
-        LoginUserHolder.init();
-
         if (logger.isDebugEnabled()) {
             logger.debug("controller aop 获取参数！" + (System.currentTimeMillis() - begin));
         }
@@ -136,7 +132,6 @@ public class ChainOnControllerAop {
             ParentSpanIdHolder.remove();
             TraceIdHolder.remove();
             SqlHolder.cleanTempSqlInfos();
-            LoginUserHolder.remove();
         }
     }
 }

@@ -18,17 +18,20 @@ package com.dg.mall.logger.util;
 
 import com.dg.mall.core.context.RequestDataHolder;
 import com.dg.mall.core.reqres.request.RequestData;
+import com.dg.mall.core.util.HttpContext;
 import com.dg.mall.core.util.SpringContextHolder;
 import com.dg.mall.core.util.ToolUtil;
+import com.dg.mall.jwt.utils.JwtTokenUtil;
 import com.dg.mall.logger.chain.context.TraceIdHolder;
 import com.dg.mall.logger.config.properties.LogProperties;
 import com.dg.mall.logger.entity.SendingCommonLog;
 import com.dg.mall.logger.service.LogProducerService;
-import com.dg.mall.model.auth.AbstractLoginUser;
-import com.dg.mall.model.auth.context.AbstractLoginContext;
+import com.dg.mall.model.exception.ServiceException;
+import com.dg.mall.model.exception.enums.CoreExceptionEnum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -37,6 +40,10 @@ import java.io.StringWriter;
  * 日志记录工具
  */
 public class LogUtil {
+
+    private static JwtTokenUtil jwtTokenUtil() {
+        return SpringContextHolder.getBean(JwtTokenUtil.class);
+    }
 
     private static LogProducerService getLogProducer() {
         return SpringContextHolder.getBean(LogProducerService.class);
@@ -147,9 +154,17 @@ public class LogUtil {
 
                 //获取当前登录用户
                 try {
-                    AbstractLoginContext bean = SpringContextHolder.getBean(AbstractLoginContext.class);
-                    AbstractLoginUser loginUser = bean.getLoginUser();
-                    log.setAccountId(loginUser.getUserUniqueId() != null ? loginUser.getUserUniqueId().toString() : null);
+                    HttpServletRequest request = HttpContext.getRequest();
+                    if (request == null) {
+                        throw new ServiceException(CoreExceptionEnum.NO_CURRENT_USER);
+                    }
+
+                    //如果请求是在http环境下，则有request对象
+                    String authorization = request.getHeader("Manage_Authorization");
+                    if(!ToolUtil.isEmpty(authorization)){
+                        String userId = jwtTokenUtil().getUserIdFromToken(authorization);
+                        log.setAccountId(userId);
+                    }
                 } catch (Exception e) {
                     if (logger.isDebugEnabled()) {
                         logger.debug("当前没有登录用户！");

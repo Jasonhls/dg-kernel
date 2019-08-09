@@ -25,7 +25,6 @@ import com.dg.mall.logger.chain.context.SpanIdHolder;
 import com.dg.mall.logger.chain.context.TraceIdHolder;
 import com.dg.mall.logger.chain.enums.RpcPhaseEnum;
 import com.dg.mall.logger.util.TraceUtil;
-import com.dg.mall.model.auth.context.LoginUserHolder;
 import com.dg.mall.model.constants.AopSortConstants;
 import com.dg.mall.validator.util.CheckUtil;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -89,8 +88,6 @@ public class ChainOnProviderAop {
         String traceId = RequestNoContext.getRequestNoByRequestParam(methodParams);
         TraceIdHolder.set(traceId);
 
-        //初始化临时LoginUser
-        LoginUserHolder.init();
 
         if (logger.isDebugEnabled()) {
             logger.debug("provider aop 获取参数！" + (System.currentTimeMillis() - begin));
@@ -138,7 +135,6 @@ public class ChainOnProviderAop {
             SpanIdHolder.remove();
             ParentSpanIdHolder.remove();
             TraceIdHolder.remove();
-            LoginUserHolder.remove();
         }
 
     }
