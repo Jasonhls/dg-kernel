@@ -29,5 +29,7 @@ public interface KafkaConstants {
 
     String TC_LOG_TOPIC = "_TC_LOG_TOPIC";
 
+    String SYS_LOG_TOPIC = "_SYS_LOG_TOPIC";
+
 
 }

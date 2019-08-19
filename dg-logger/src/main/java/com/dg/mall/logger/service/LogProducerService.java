@@ -19,6 +19,7 @@ package com.dg.mall.logger.service;
 import com.dg.mall.logger.entity.SendingCommonLog;
 import com.dg.mall.logger.entity.SendingTCLog;
 import com.dg.mall.logger.entity.SendingTraceLog;
+import com.dg.mall.logger.entity.SysOperationLogDTO;
 
 /**
  * 发送日志到消息队列的接口类
@@ -51,5 +52,14 @@ public interface LogProducerService {
      * @Date 2018/5/15 下午7:16
      */
     void sendTcMsg(SendingTCLog sendingTCLog);
+
+
+    /**
+     * 发送操作日志
+     *
+     * @author fengshuonan
+     * @Date 2018/5/15 下午7:16
+     */
+    void sendLogMsg(SysOperationLogDTO sysOperationLogDTO);
 
 }

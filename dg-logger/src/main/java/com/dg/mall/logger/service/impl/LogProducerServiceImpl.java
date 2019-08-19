@@ -19,6 +19,7 @@ import com.dg.mall.logger.constants.KafkaConstants;
 import com.dg.mall.logger.entity.SendingCommonLog;
 import com.dg.mall.logger.entity.SendingTCLog;
 import com.dg.mall.logger.entity.SendingTraceLog;
+import com.dg.mall.logger.entity.SysOperationLogDTO;
 import com.dg.mall.logger.service.LogProducerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -78,6 +79,18 @@ public class LogProducerServiceImpl implements LogProducerService {
                 template.send(KafkaConstants.TC_LOG_TOPIC, sendingTCLog);
             } catch (Exception e) {
                 logger.error("记录trace日志到kafka错误!", e);
+            }
+        });
+    }
+
+    @Override
+    public void sendLogMsg(SysOperationLogDTO sysOperationLogDTO) {
+
+        executorService.execute(() -> {
+            try {
+                template.send(KafkaConstants.SYS_LOG_TOPIC, sysOperationLogDTO);
+            } catch (Exception e) {
+                logger.error("记录系统操作日志到kafka错误!", e);
             }
         });
     }

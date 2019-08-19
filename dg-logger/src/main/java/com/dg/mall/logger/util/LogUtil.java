@@ -16,25 +16,30 @@
 package com.dg.mall.logger.util;
 
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.dg.mall.core.context.RequestDataHolder;
 import com.dg.mall.core.reqres.request.RequestData;
 import com.dg.mall.core.util.HttpContext;
 import com.dg.mall.core.util.SpringContextHolder;
+import com.dg.mall.core.util.StringUtil;
 import com.dg.mall.core.util.ToolUtil;
 import com.dg.mall.jwt.utils.JwtTokenUtil;
 import com.dg.mall.logger.chain.context.TraceIdHolder;
 import com.dg.mall.logger.config.properties.LogProperties;
 import com.dg.mall.logger.entity.SendingCommonLog;
+import com.dg.mall.logger.entity.SysOperationLogDTO;
 import com.dg.mall.logger.service.LogProducerService;
 import com.dg.mall.model.exception.ServiceException;
 import com.dg.mall.model.exception.enums.CoreExceptionEnum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.Date;
+
 
 /**
  * 日志记录工具
@@ -161,7 +166,7 @@ public class LogUtil {
 
                     //如果请求是在http环境下，则有request对象
                     String authorization = request.getHeader("Manage_Authorization");
-                    if(!ToolUtil.isEmpty(authorization)){
+                    if (!ToolUtil.isEmpty(authorization)) {
                         String userId = jwtTokenUtil().getUserIdFromToken(authorization);
                         log.setAccountId(userId);
                     }
@@ -263,7 +268,7 @@ public class LogUtil {
         INFO, ERROR, WARN, DEBUG, TRACE
     }
 
-    private static String stringFormat(String message, String... args){
+    private static String stringFormat(String message, String... args) {
         StringBuffer result = new StringBuffer(message);
         try {
             String rep = "{}";
@@ -273,10 +278,24 @@ public class LogUtil {
                 result.replace(start, end, arg);
             }
 
-        }catch (Exception e){
+        } catch (Exception e) {
             debug("日志格式化错误");
         }
         return result.toString();
+    }
+
+    /**
+     * 发送kafka消息
+     */
+    public static void doSysLog(String params, String path, HttpServletRequest request) {
+        String token = request.getHeader("Manage_Authorization");
+        if (StringUtil.isNotBlank(token)) {
+            String userId = jwtTokenUtil().getUserIdFromToken(token);
+            SysOperationLogDTO log = new SysOperationLogDTO(userId, request.getRemoteAddr(),
+                    request.getRequestURI(), params, request.getMethod(), new Date(), path);
+            getLogProducer().sendLogMsg(log);
+        }
+
     }
 
 }
