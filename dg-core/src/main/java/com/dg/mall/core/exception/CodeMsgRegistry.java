@@ -4,7 +4,7 @@ import com.dg.mall.model.exception.AbstractBaseExceptionEnum;
 import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.PostConstruct;
-import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Configuration
@@ -17,9 +17,8 @@ public class CodeMsgRegistry  {
 
     @PostConstruct
     public void init(){
-        List<Class<?>> classes = SpringApplicationUtils.getClassesByPackageName(SpringApplicationUtils.getBasePackage());
-        for (int i = 0;i < classes.size();i++){
-            Class clazz = classes.get(i);
+        Set<Class<?>> clzFromPkg = ClassHelper.getClzFromPkg(SpringApplicationUtils.getBasePackage());
+        for(Class clazz : clzFromPkg){
             Class[] interfaces = clazz.getInterfaces();
             for (int m = 0;m < interfaces.length;m++){
                 Class anInterface = interfaces[m];

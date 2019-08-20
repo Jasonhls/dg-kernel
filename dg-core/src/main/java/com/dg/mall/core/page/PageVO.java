@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.dg.mall.core.util.StringUtil;
 
-
 import java.util.Collections;
 import java.util.List;
 

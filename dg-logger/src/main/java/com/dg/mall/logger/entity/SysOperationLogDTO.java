@@ -3,7 +3,6 @@ package com.dg.mall.logger.entity;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.lang.reflect.Method;
 import java.util.Date;
 
 /**

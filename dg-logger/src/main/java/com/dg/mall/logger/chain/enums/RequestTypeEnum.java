@@ -16,11 +16,6 @@
 package com.dg.mall.logger.chain.enums;
 
 import lombok.Getter;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-
-import java.lang.annotation.Annotation;
 
 /**
  * 请求方式标识
