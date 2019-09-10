@@ -3,6 +3,7 @@ package com.dg.mall.logger.entity;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.lang.reflect.Method;
 import java.util.Date;
 
 /**
@@ -48,18 +49,26 @@ public class SysOperationLogDTO implements Serializable {
     private Date createTime;
 
     /**
-     * path
+     * 关键参数
      */
-    private String path;
+    private String keyParam;
 
+    /**
+     * 关键参数描述
+     */
+    private String paramDesc;
+    /**
+     * 描述
+     */
+    private String remark;
 
-    public SysOperationLogDTO(String userId, String ipAddress, String requestUrl, String requestParams, String requestType, Date createTime, String path) {
-        this.userId = userId;
-        this.ipAddress = ipAddress;
-        this.requestUrl = requestUrl;
+    public SysOperationLogDTO() {
+    }
+
+    public SysOperationLogDTO(String requestParams, String keyParam, String paramDesc, String remark) {
         this.requestParams = requestParams;
-        this.requestType = requestType;
-        this.createTime = createTime;
-        this.path = path;
+        this.keyParam = keyParam;
+        this.paramDesc = paramDesc;
+        this.remark = remark;
     }
 }

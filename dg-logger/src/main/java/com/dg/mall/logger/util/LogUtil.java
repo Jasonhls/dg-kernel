@@ -25,11 +25,13 @@ import com.dg.mall.core.util.ToolUtil;
 import com.dg.mall.jwt.utils.JwtTokenUtil;
 import com.dg.mall.logger.chain.context.TraceIdHolder;
 import com.dg.mall.logger.config.properties.LogProperties;
+import com.dg.mall.logger.constants.RequestConstants;
 import com.dg.mall.logger.entity.SendingCommonLog;
 import com.dg.mall.logger.entity.SysOperationLogDTO;
 import com.dg.mall.logger.service.LogProducerService;
 import com.dg.mall.model.exception.ServiceException;
 import com.dg.mall.model.exception.enums.CoreExceptionEnum;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -286,15 +288,45 @@ public class LogUtil {
     /**
      * 发送kafka消息
      */
-    public static void doSysLog(String params, String path, HttpServletRequest request) {
-        String token = request.getHeader("Manage_Authorization");
-        if (StringUtil.isNotBlank(token)) {
-            String userId = jwtTokenUtil().getUserIdFromToken(token);
-            SysOperationLogDTO log = new SysOperationLogDTO(userId, request.getRemoteAddr(),
-                    request.getRequestURI(), params, request.getMethod(), new Date(), path);
-            getLogProducer().sendLogMsg(log);
+    public static void doSysLog(SysOperationLogDTO log) {
+        HttpServletRequest request = HttpContext.getRequest();
+        if (request != null) {
+            String token = request.getHeader("Manage_Authorization");
+            if (StringUtil.isNotBlank(token)) {
+                String userId = jwtTokenUtil().getUserIdFromToken(token);
+                log.setUserId(userId);
+                log.setIpAddress(getRequestIp(request));
+                log.setRequestType(request.getMethod());
+                log.setRequestUrl(request.getRequestURI());
+                log.setCreateTime(new Date());
+                getLogProducer().sendLogMsg(log);
+            }
         }
+    }
 
+    /**
+     * 获取客户端ip
+     *
+     * @param request
+     * @return
+     */
+    private static String getRequestIp(HttpServletRequest request) {
+        String ip = request.getHeader(RequestConstants.X_FORWARDED_FOR);
+        if (StringUtils.isNotEmpty(ip) && !RequestConstants.UNKNOWN.equalsIgnoreCase(ip)) {
+            // 多次反向代理后会有多个ip值，第一个ip才是真实ip
+            int index = ip.indexOf(",");
+            if (index != -1) {
+                return ip.substring(0, index);
+            } else {
+                return ip;
+            }
+        }
+        ip = request.getHeader(RequestConstants.X_REAL_IP);
+        if (StringUtils.isNotEmpty(ip) && !RequestConstants.UNKNOWN.equalsIgnoreCase(ip)) {
+            return ip;
+        }
+        ip = request.getRemoteAddr();
+        return ip.equals(RequestConstants.LOCAL_IP) ? RequestConstants.REAL_LOCAL_IP : ip;
     }
 
 }

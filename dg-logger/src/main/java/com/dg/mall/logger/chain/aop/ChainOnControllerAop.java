@@ -15,18 +15,17 @@
  */
 package com.dg.mall.logger.chain.aop;
 
-
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.dg.mall.core.context.RequestNoContext;
-import com.dg.mall.core.util.HttpContext;
 import com.dg.mall.core.util.ToolUtil;
 import com.dg.mall.logger.chain.context.ParentSpanIdHolder;
 import com.dg.mall.logger.chain.context.SpanIdContext;
 import com.dg.mall.logger.chain.context.SpanIdHolder;
 import com.dg.mall.logger.chain.context.TraceIdHolder;
-import com.dg.mall.logger.chain.enums.RequestTypeEnum;
 import com.dg.mall.logger.chain.enums.RpcPhaseEnum;
+import com.dg.mall.logger.config.SysLog;
+import com.dg.mall.logger.entity.SysOperationLogDTO;
 import com.dg.mall.logger.log.SqlHolder;
 import com.dg.mall.logger.util.LogUtil;
 import com.dg.mall.logger.util.TraceUtil;
@@ -40,9 +39,6 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.Order;
-import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
 
 
 /**
@@ -144,46 +140,14 @@ public class ChainOnControllerAop {
         }
     }
 
+
     private void sysLog(ProceedingJoinPoint point, MethodSignature methodSignature) {
-
-        HttpServletRequest request = HttpContext.getRequest();
-        if (request != null) {
-            //获取请求参数
-            String params = JSON.toJSONString(point.getArgs());
-            //获取请求方式
-            String requestType = request.getMethod();
-            //根据请求方式获取注解值
-            StringBuilder sb = new StringBuilder();
-            //类上注解值
-            RequestMapping requestMapping = methodSignature.getMethod().getDeclaringClass().getAnnotation(RequestMapping.class);
-            if (requestMapping != null) {
-                String[] classPath = requestMapping.value();
-                getPath(sb, classPath);
-            }
-            //方法上注解值
-            if (RequestTypeEnum.GET.getDesc().equals(requestType)) {
-                String[] methodPath = methodSignature.getMethod().getAnnotation(GetMapping.class).value();
-                getPath(sb, methodPath);
-            } else if (RequestTypeEnum.POST.getDesc().equals(requestType)) {
-                String[] methodPath = methodSignature.getMethod().getAnnotation(PostMapping.class).value();
-                getPath(sb, methodPath);
-            } else if (RequestTypeEnum.PUT.getDesc().equals(requestType)) {
-                String[] methodPath = methodSignature.getMethod().getAnnotation(PutMapping.class).value();
-                getPath(sb, methodPath);
-            } else if (RequestTypeEnum.DELETE.getDesc().equals(requestType)) {
-                String[] methodPath = methodSignature.getMethod().getAnnotation(DeleteMapping.class).value();
-                getPath(sb, methodPath);
-            }
-
-            LogUtil.doSysLog(params, sb.toString(), request);
+        String params = JSON.toJSONString(point.getArgs());
+        SysLog sysLog = methodSignature.getMethod().getAnnotation(SysLog.class);
+        if (sysLog != null) {
+            SysOperationLogDTO log = new SysOperationLogDTO(params, sysLog.keyParam(), sysLog.paramDescription(), sysLog.description());
+            LogUtil.doSysLog(log);
         }
     }
-
-    private StringBuilder getPath(StringBuilder sb, String[] methodPath) {
-        if (methodPath.length > 0) {
-            sb.append(methodPath[0]);
-        }
-        return sb;
-    }
-
 }
+
